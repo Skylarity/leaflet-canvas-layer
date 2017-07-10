@@ -27,7 +27,10 @@ var map = L.map('map').setView([34.5, -106.1], 7)
 L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2t5bGFyaXR5IiwiYSI6ImNpczI4ZHBmbzAwMzgyeWxrZmZnMGI5ZXYifQ.1-jGFvM11OgVgYkz3WvoNw")
 	.addTo(map)
 
-var mousePos = null;
+var mousePos = {
+	x: -100,
+	y: -100
+}
 
 var hexLayerClass = function() {
 	this.onDrawLayer = function(info) {
@@ -52,8 +55,6 @@ var hexLayerClass = function() {
 
 			polygons.forEach(function(coords) {
 				// console.log(coords)
-				var dWorldCoords = d.geometry.coordinates[0][0]
-
 				var containsHex = false
 				d.geometry.coordinates[0].forEach(function(coord) {
 					containsHex = info.bounds.contains([coord[1], coord[0]]) ? true : containsHex;
@@ -70,6 +71,10 @@ var hexLayerClass = function() {
 
 			var hoveringCurrent = mousePos ? ctx.isPointInPath(mousePos.x, mousePos.y) : false
 			ctx.fillStyle = mousePos && hoveringCurrent ? 'rgba(255, 255, 255, 0.5)' : colorScale(d.properties.size)
+
+			if (hoveringCurrent) {
+				// TODO: Tooltip
+			}
 
 			ctx.fill()
 
