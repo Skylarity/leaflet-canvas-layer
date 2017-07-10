@@ -27,6 +27,8 @@ var map = L.map('map').setView([34.5, -106.1], 7)
 L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2t5bGFyaXR5IiwiYSI6ImNpczI4ZHBmbzAwMzgyeWxrZmZnMGI5ZXYifQ.1-jGFvM11OgVgYkz3WvoNw")
 	.addTo(map)
 
+var mousePos = null;
+
 var hexLayerClass = function() {
 	this.onDrawLayer = function(info) {
 		var ctx = info.canvas.getContext('2d')
@@ -60,7 +62,9 @@ var hexLayerClass = function() {
 				}
 			})
 
-			ctx.fillStyle = colorScale(d.properties.size)
+			var hoveringCurrent = mousePos ? ctx.isPointInPath(mousePos.x, mousePos.y) : false
+			ctx.fillStyle = mousePos && hoveringCurrent ? 'rgba(255, 255, 255, 0.5)' : colorScale(d.properties.size)
+
 			ctx.fill()
 
 			if (d.properties.flooded) {
@@ -75,3 +79,20 @@ var hexLayerClass = function() {
 hexLayerClass.prototype = new L.CanvasLayer()
 var hexLayer = new hexLayerClass()
 hexLayer.addTo(map)
+
+var mouseIsDown = false
+document.getElementById('map').addEventListener('mousedown', function(e) {
+	mouseIsDown = true
+})
+document.getElementById('map').addEventListener('mousemove', function(e) {
+	mousePos = {
+		x: e.clientX,
+		y: e.clientY
+	}
+	if (!mouseIsDown) {
+		hexLayer.needRedraw()
+	}
+})
+document.getElementById('map').addEventListener('mouseup', function(e) {
+	mouseIsDown = false
+})
