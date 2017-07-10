@@ -53,7 +53,13 @@ var hexLayerClass = function() {
 			polygons.forEach(function(coords) {
 				// console.log(coords)
 				var dWorldCoords = d.geometry.coordinates[0][0]
-				if (info.bounds.contains([dWorldCoords[1], dWorldCoords[0]])) {
+
+				var containsHex = false
+				d.geometry.coordinates[0].forEach(function(coord) {
+					containsHex = info.bounds.contains([coord[1], coord[0]]) ? true : containsHex;
+				})
+
+				if (containsHex) {
 					ctx.moveTo(coords[0][0], coords[0][1])
 					coords.forEach(function(coord) {
 						// console.log(coord)
