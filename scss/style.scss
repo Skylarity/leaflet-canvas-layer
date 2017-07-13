@@ -3,3 +3,34 @@
 	width: 100%;
 	height: 100%;
 }
+
+#toolTip {
+	position: fixed;
+	padding: 1rem;
+	width: 500px;
+
+	color: #fff;
+	background: rgba(0, 0, 0, 0.7);
+
+	opacity: 0;
+
+	transition: .5s opacity;
+
+	pointer-events: none;
+
+	z-index: 10000;
+}
+
+#toolTip .close-btn {
+	position: absolute;
+	top: 0;
+	right: 0;
+
+	padding: 5px;
+
+	font-size: 1.2rem;
+
+	cursor: pointer;
+
+	pointer-events: all;
+}
