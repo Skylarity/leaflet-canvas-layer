@@ -64,7 +64,7 @@ map.on('load', function() {
 				.html('')
 				.style('width', width + 'px')
 				.style('height', height + 'px')
-				.style('bottom', -(height / 2) + 'px')
+				.style('bottom', -(height / 2) + 'px') // TODO: Might have to extend L.popup to fix the zoom issue
 				.style('left', '100px')
 				.style('margin', 0)
 				.style('pointer-events', 'none')
@@ -83,6 +83,7 @@ map.on('load', function() {
 				.attr('id', 'popupContent')
 				.style('width', width + 'px')
 				.style('height', height + 'px')
+				.style('pointer-events', 'auto')
 
 			content.append('div')
 				.html('Size: ' + Math.round(d.properties.size))
@@ -91,7 +92,6 @@ map.on('load', function() {
 				.html('Flooded: ' + (d.properties.flooded ? 'Yes' : 'No'))
 
 			content.append('button')
-				.style('pointer-events', 'auto')
 				.text('close')
 				.on('click', function() {
 					map.closePopup()
