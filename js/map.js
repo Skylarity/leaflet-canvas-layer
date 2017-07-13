@@ -48,18 +48,54 @@ map.on('load', function() {
 			})
 			return newPolygon
 		})
-		var hex = L.polygon(coords, {fillColor: colorScale(d.properties.size), fillOpacity: 1, stroke: d.flooded, weight: 1, color: 'rgba(255, 255, 255, 0.5)'}).addTo(map)
+		var hex = L.polygon(coords, {fillColor: colorScale(d.properties.size), fillOpacity: 1, stroke: d.properties.flooded, weight: 1, color: 'rgba(255, 255, 255, 0.5)'}).addTo(map)
 		hex.bindPopup(function() {
 			var centroid = turf.centroid(d);
 			centroid = [centroid.geometry.coordinates[1], centroid.geometry.coordinates[0]]
 
-			var popupContent = document.createElement('p')
-			popupContent.innerHTML = 'testing'
-
 			var popup = L.popup()
 				.setLatLng(centroid)
-				.setContent(popupContent)
 				.openOn(map)
+
+			var width = 300,
+				height = 500
+
+			var popup = d3.selectAll('.leaflet-popup')
+				.html('')
+				.style('width', width + 'px')
+				.style('height', height + 'px')
+				.style('bottom', -(height / 2) + 'px')
+				.style('left', '100px')
+				.style('margin', 0)
+				.style('pointer-events', 'none')
+
+			var tail = popup.append('svg')
+				.style('position', 'absolute')
+				.style('left', '-100px')
+				.style('height', height)
+				.append('polygon')
+				.attr('points', function() {
+					return [[100, 0], [100, height], [0, height / 2]]
+				})
+				.style('fill', 'rgba(255, 255, 255, 0.5)')
+
+			var content = popup.append('div')
+				.attr('id', 'popupContent')
+				.style('width', width + 'px')
+				.style('height', height + 'px')
+
+			content.append('div')
+				.html('Size: ' + Math.round(d.properties.size))
+
+			content.append('div')
+				.html('Flooded: ' + (d.properties.flooded ? 'Yes' : 'No'))
+
+			content.append('button')
+				.style('pointer-events', 'auto')
+				.text('close')
+				.on('click', function() {
+					map.closePopup()
+				})
 
 			return popup
 		})
