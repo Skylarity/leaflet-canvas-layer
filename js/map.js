@@ -23,7 +23,9 @@ data.features.map(function(feature) {
 })
 // END DATA CREATION
 
-var map = L.map('map')
+var map = L.map('map', {
+	renderer: L.canvas()
+})
 L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2t5bGFyaXR5IiwiYSI6ImNpczI4ZHBmbzAwMzgyeWxrZmZnMGI5ZXYifQ.1-jGFvM11OgVgYkz3WvoNw")
 	.addTo(map)
 
