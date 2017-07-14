@@ -11,9 +11,13 @@ var sizingScale = d3.scaleLinear()
 // BEGIN DATA CREATION
 var data = turf.hexGrid([-109, 37, -103, 32], 6, 'miles')
 
-data.features.map(function(feature) {
+var dataCreationSize = d3.scaleLinear()
+	.domain([0, data.features.length])
+	.range([1, 6])
+
+data.features.map(function(feature, i) {
 	feature.properties = {
-		size: (Math.random() * (maxHexSize - minHexSize)) + minHexSize,
+		size: dataCreationSize(i),//(Math.random() * (maxHexSize - minHexSize)) + minHexSize,
 		flooded: Math.random() > .9 ? true : false
 	}
 
