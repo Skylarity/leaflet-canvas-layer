@@ -54,7 +54,13 @@ map.on('load', function() {
 			})
 			return newPolygon
 		})
-		var hex = L.polygon(coords, {fillColor: colorScale(d.properties.size), fillOpacity: 1, stroke: d.properties.flooded, weight: 1, color: 'rgba(255, 255, 255, 0.5)'}).addTo(map)
+		var hex = L.polygon(coords, {
+			fillColor: colorScale(d.properties.size),
+			fillOpacity: 1,
+			stroke: d.properties.flooded,
+			weight: 1,
+			color: 'rgba(255, 255, 255, 0.5)'
+		}).addTo(map)
 		hex.bindPopup(function() {
 			var centroid = turf.centroid(d);
 			centroid = [centroid.geometry.coordinates[1], centroid.geometry.coordinates[0]]
